@@ -1,2 +1,7 @@
 # tic-tac-toe-cpp
-A simple tic tac toe game created in C++ 
+<html>
+  <h1>
+    A simple tic tac toe game created in C++ 
+
+  </h1>
+</html>
