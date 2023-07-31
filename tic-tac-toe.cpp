@@ -30,7 +30,7 @@ char **getBoard(int size);
 void displayBoard(char **, int size);
 bool gameOver(char **, int size);
 bool checkRows(char **, int);
-
+bool checkColumns(char **, int);
 
 int main(){
     // int game = 1;
@@ -53,11 +53,12 @@ void game(){
     cout << "Enter the size of the board"<<endl;
     cin >> size;
     char **board = getBoard(size);
-    board[1][0] = PLAYER1;
-    board[1][1] = PLAYER1;
+    board[0][2] = PLAYER1;
     board[1][2] = PLAYER1;
+    board[2][2] = PLAYER1;
+    board[3][2] = PLAYER1;
     displayBoard(board, size);
-    cout << checkRows(board, size);
+    cout << checkColumns(board, size);
 
 }
 
@@ -139,6 +140,38 @@ bool checkRows(char **board, int size){
     }//end of loop
     
     //if we reached this point, then we never got a true row and therefore return false
+    return false;
+}
+
+//check whether any column matches 
+bool checkColumns(char **board, int size){
+    
+    for(int col = 0; col < size; col++){
+
+        bool column = true;
+        //Will iterate through all rows checking that the character in the row matches 
+        //the character in the following row but same column
+        for(int row = 0; row < size-1; row++){
+            //since I can get the character before getting the row, I will 
+            //check each letter to the following one, 
+            //if false then break
+            char letter = board[row][col];
+            if(letter != board[row + 1][col]){
+                column = false;
+                if(!column){
+                    break;
+                }
+            }
+
+        }//end of loop
+
+        //check if column holds true
+        if(column){
+            return true;
+        }
+    }//end of loop
+    
+    //if it reaches this point then no column held true
     return false;
 }
 
