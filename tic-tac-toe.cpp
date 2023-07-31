@@ -26,6 +26,9 @@ using namespace std;
 void game();
 char **getBoard(int size); 
 void displayBoard(char **, int size);
+bool gameOver(char **, int size);
+
+
 int main(){
     // int game = 1;
     // cout <<setw(30)<< "Welcome to Tic  "<<endl;
@@ -91,5 +94,44 @@ char ** getBoard(int size){
 
 
     return board;
+}
+//this will check each row 
+//we will need three different functions
+    //one to check each row, 
+    //one to check each column,
+    //one to check the diagonals
+bool checkRows(char **board, int size){
+    
+    for(int i = 0; i < size; i++){
+        //get the value of the first item in the row
+        char first = board[i][0];
+
+        //set the row to equal true, if at any point the check fails
+        //then set the row to false and break from 
+        bool row = true;
+        for(int j = 0; j < size; j++){
+            //first make sure to skip the first column
+            if(j == 0){
+                continue;
+            }
+            if(first != board[i][j]){
+                row = false;
+                if(row == false){
+                    //since it failed brake from the loop
+                    break;
+                }
+            }
+
+        }//end of loop
+        
+        //if it gets to this point row should be true
+        //double check row still is true, return true
+        if(row){
+            return true;
+        }
+    }//end of loop
+    
+    //if we reached this point, then we never got a true row and therefore return false
+    return false;
 }
 
