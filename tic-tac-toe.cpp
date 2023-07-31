@@ -31,8 +31,13 @@ void displayBoard(char **, int size);
 bool gameOver(char **, int size);
 bool checkRows(char **, int);
 bool checkColumns(char **, int);
+bool checkDiagonals(char **, int);
+
 
 int main(){
+    //TODO create a variable that keeps track at how many pieces/moves have been made
+
+
     // int game = 1;
     // cout <<setw(30)<< "Welcome to Tic  "<<endl;
     // cout << "A two player game of tic tac toe where each player takes a turn"<<endl;
@@ -53,12 +58,12 @@ void game(){
     cout << "Enter the size of the board"<<endl;
     cin >> size;
     char **board = getBoard(size);
-    board[0][2] = PLAYER1;
+    board[0][3] = PLAYER1;
     board[1][2] = PLAYER1;
-    board[2][2] = PLAYER1;
-    board[3][2] = PLAYER1;
+    board[2][1] = PLAYER2;
+    board[3][0] = PLAYER1;
     displayBoard(board, size);
-    cout << checkColumns(board, size);
+    cout << checkDiagonals(board, size);
 
 }
 
@@ -175,3 +180,43 @@ bool checkColumns(char **board, int size){
     return false;
 }
 
+/**Function will check if the diagonals hold true*/
+bool checkDiagonals(char **board, int size){
+    //Only one for loop will be necessary for each direction
+    //initiate the first character to check
+    int endStart = size-1;
+    char backSlash= board[0][0];
+    char forwardSlash = board[0][endStart];
+
+    //check the backSlash direction 
+    bool bs = true;
+    for(int row = 0; row < size; row++){
+        if(row == 0){
+            continue;
+        }
+        if(backSlash != board[row][row]){
+            bs = false;
+        }
+    }
+
+    //check the forwardSlash direction
+    bool fs = true;
+    for(int row = 0; row < size; row++)
+    {
+        if(row == 0){
+            continue;
+        }
+        if(forwardSlash != board[row][endStart-row]){
+            fs= false;
+        }
+    }
+
+    //if either remains true, then return true
+    //otherwise return false;
+    if(bs == true || fs == true){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
