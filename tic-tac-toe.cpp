@@ -1,6 +1,8 @@
 #include <iostream>
 #include <iomanip>
 
+const char PLAYER1 = 'X';
+const char PLAYER2 = 'O';
 using namespace std;
 
 /*Author: Emanuel Ruiz
@@ -27,6 +29,7 @@ void game();
 char **getBoard(int size); 
 void displayBoard(char **, int size);
 bool gameOver(char **, int size);
+bool checkRows(char **, int);
 
 
 int main(){
@@ -50,8 +53,11 @@ void game(){
     cout << "Enter the size of the board"<<endl;
     cin >> size;
     char **board = getBoard(size);
-    
+    board[1][0] = PLAYER1;
+    board[1][1] = PLAYER1;
+    board[1][2] = PLAYER1;
     displayBoard(board, size);
+    cout << checkRows(board, size);
 
 }
 
@@ -102,6 +108,7 @@ char ** getBoard(int size){
     //one to check the diagonals
 bool checkRows(char **board, int size){
     
+    //Iterate through all rows checking the columns against one another. 
     for(int i = 0; i < size; i++){
         //get the value of the first item in the row
         char first = board[i][0];
