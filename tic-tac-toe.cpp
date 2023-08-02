@@ -25,46 +25,111 @@ using namespace std;
  *      checks whether there aren't any more possible spaces available
 */
 
+
+//8/1/23 -------- add try catch
+
 void game();
+void deleteDynamicArray(char **, int );
 char **getBoard(int size); 
 void displayBoard(char **, int size);
 bool gameOver(char **, int size);
 bool checkRows(char **, int);
 bool checkColumns(char **, int);
 bool checkDiagonals(char **, int);
+void playerChoice(char **, const char, int &, int &, const int);
 
 
 int main(){
-    //TODO create a variable that keeps track at how many pieces/moves have been made
+    
 
 
-    // int game = 1;
-    // cout <<setw(30)<< "Welcome to Tic  "<<endl;
-    // cout << "A two player game of tic tac toe where each player takes a turn"<<endl;
-    // do{
-    //     cout<<"Would You like to play a game of tic tac toe"<<endl;
-    //     cout<<"enter any character to continue or 0 (zero) to quit"<<endl;
-    //     cin >> game;
-        
-    // }while(game != 0 );
-    game();
+    cout <<setw(30)<< "Welcome to Tic  "<<endl;
+    cout << setw(40) << "A two player game of tic tac toe where each player takes a turn"<<endl;
+    
+    int play; 
+    cout <<setw(40)<< "Would you like to play a game of tic tac toe"<<endl<<setw(30)<<"enter any number to play and 0 to quit"<<endl;
+    cin >> play;
+    while(play != 0){
+        game();
+        cout << "Do you wish to play again, enter 1 to play again 0 to quit"<<endl;
+        cin >> play;
+    }
 
+    
     return 0;
 }
 
 /**The tic tac toe gave loop*/
 void game(){
+    //Things to consider
+        //don't start checking the board until player 1 has made the the number of moves that the size of the board is
     int size;
-    cout << "Enter the size of the board"<<endl;
+
+    //keep track of total moves
+    int totalMoves = 0; 
+    int player1Moves = 0;
+    int player2Moves = 0;
+    cout << "What size board do you wish to play in. Please Enter the size of the board"<<endl;
     cin >> size;
     char **board = getBoard(size);
-    board[0][3] = PLAYER1;
-    board[1][2] = PLAYER1;
-    board[2][1] = PLAYER2;
-    board[3][0] = PLAYER1;
-    displayBoard(board, size);
-    cout << checkDiagonals(board, size);
+    bool gameover = false;
 
+    while(!gameOver){
+        playerChoice(board, PLAYER1, player1Moves, totalMoves, size);
+        displayBoard(board, size);
+        playerChoice(board, PLAYER2, player2Moves, totalMoves, size); 
+    }
+    displayBoard(board, size);
+    
+
+}
+/**Get the player's location choice and make sure that the choice is valid, whether inbounds or empty */
+void playerChoice(char **board, const char player,int &pMoves, int &tMoves, const int size){
+    int row;
+    int column;
+    bool valid= true;
+
+    //depending on player display output
+    if(player == PLAYER1){
+        cout << "player one, please enter the row and column numbers of the location you wish: "<<endl;
+        cin >> row >> column;
+    }
+    else{
+        cout << "player two, please enter the row and column numbers of the location you wish: "<<endl;
+        cin >> row >> column;
+    }
+
+    //check that the input is valid
+    if((row < 0 || row >= size)|| (column < 0 || column >=size)){
+        valid = false;
+    }
+    else if(board[row][column] == 'X' || board[row][column] == 'O'){
+        valid = false;
+    }
+    else
+    {
+        board[row][column] = player;
+        pMoves ++; 
+        tMoves ++;
+    }
+    //if input is not valid loop until it is
+    while(!valid){
+        cout << "Sorry, location is not empty or location is out of bounds. Input a new row and column"<<endl;
+        cin >> row >> column;
+        if((row < 0 || row >= size)|| (column < 0 || column >=size)){
+            valid = false;
+        }
+        else if(board[row][column] == 'X' || board[row][column] == 'O'){
+            valid = false;
+        }
+        else
+        {
+            board[row][column] = player;
+            valid = true; 
+            pMoves ++; 
+            tMoves ++;
+        }
+    }
 }
 
 /**Displays the tic tac toe*/
@@ -219,4 +284,12 @@ bool checkDiagonals(char **board, int size){
     else{
         return false;
     }
+}
+//delete the allocated memory of the dynamic array pointer
+//Q: does this work
+void deleteDynamicArray(char **board, int size){
+    for(int i = 0; i < size; i++){
+        delete [] board[i];
+    }
+    delete [] board;
 }
