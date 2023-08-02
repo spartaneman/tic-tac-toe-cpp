@@ -29,13 +29,13 @@ using namespace std;
 //8/1/23 -------- add try catch
 
 void game();
-void deleteDynamicArray(char **, int );
+void deleteDynamicArray(char **, const int );
 char **getBoard(int size); 
-void displayBoard(char **, int size);
-bool gameOver(char **, int size);
-bool checkRows(char **, int);
-bool checkColumns(char **, int);
-bool checkDiagonals(char **, int);
+void displayBoard(char **, const int size);
+bool gameOver(char **, const int size);
+bool checkRows(char **, const int);
+bool checkColumns(char **, const int);
+bool checkDiagonals(char **, const int);
 void playerChoice(char **, const char, int &, int &, const int);
 
 
@@ -72,12 +72,14 @@ void game(){
     cout << "What size board do you wish to play in. Please Enter the size of the board"<<endl;
     cin >> size;
     char **board = getBoard(size);
-    bool gameover = false;
+    bool gameOver = false;
 
     while(!gameOver){
+         
         playerChoice(board, PLAYER1, player1Moves, totalMoves, size);
         displayBoard(board, size);
         playerChoice(board, PLAYER2, player2Moves, totalMoves, size); 
+        displayBoard(board, size);
     }
     displayBoard(board, size);
     
@@ -133,7 +135,7 @@ void playerChoice(char **board, const char player,int &pMoves, int &tMoves, cons
 }
 
 /**Displays the tic tac toe*/
-void displayBoard(char **arr, int size){
+void displayBoard(char **arr, const int size){
     for(int i =0; i < size; i++){
     
         for(int j = 0; j < size; j++){
@@ -177,7 +179,7 @@ char ** getBoard(int size){
     //one to check each row, 
     //one to check each column,
     //one to check the diagonals
-bool checkRows(char **board, int size){
+bool checkRows(char **board, const int size){
     
     //Iterate through all rows checking the columns against one another. 
     for(int i = 0; i < size; i++){
@@ -214,7 +216,7 @@ bool checkRows(char **board, int size){
 }
 
 //check whether any column matches 
-bool checkColumns(char **board, int size){
+bool checkColumns(char **board, const int size){
     
     for(int col = 0; col < size; col++){
 
@@ -246,7 +248,7 @@ bool checkColumns(char **board, int size){
 }
 
 /**Function will check if the diagonals hold true*/
-bool checkDiagonals(char **board, int size){
+bool checkDiagonals(char **board, const int size){
     //Only one for loop will be necessary for each direction
     //initiate the first character to check
     int endStart = size-1;
@@ -287,7 +289,7 @@ bool checkDiagonals(char **board, int size){
 }
 //delete the allocated memory of the dynamic array pointer
 //Q: does this work
-void deleteDynamicArray(char **board, int size){
+void deleteDynamicArray(char **board, const int size){
     for(int i = 0; i < size; i++){
         delete [] board[i];
     }
