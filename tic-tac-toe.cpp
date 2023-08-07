@@ -33,6 +33,7 @@ void deleteDynamicArray(char **, const int );
 char **getBoard(int size); 
 void displayBoard(char **, const int size);
 bool gameOver(char **, const int size);
+bool allChecks(char **, const int size);
 bool checkRows(char **, const int);
 bool checkColumns(char **, const int);
 bool checkDiagonals(char **, const int);
@@ -66,25 +67,59 @@ void game(){
     int size;
 
     //keep track of total moves
-    int totalMoves = 0; 
+    int totalMoves = 0;
+    
     int player1Moves = 0;
     int player2Moves = 0;
     cout << "What size board do you wish to play in. Please Enter the size of the board"<<endl;
     cin >> size;
+    int tie = size * size;
     char **board = getBoard(size);
     bool gameOver = false;
 
     while(!gameOver){
          
         playerChoice(board, PLAYER1, player1Moves, totalMoves, size);
+       
+        if(player1Moves >= size){
+            if(allChecks(board, size)){
+                gameOver = true;
+                cout << "Congratulations Player 1, You won"<<endl;
+                break;
+            }
+             else if (totalMoves == tie)
+            {
+                gameOver = true; 
+                cout << "Sorry, no more possible moves. Tie Game"<<endl;
+                break;
+            }
+        }
         displayBoard(board, size);
+
         playerChoice(board, PLAYER2, player2Moves, totalMoves, size); 
+        if(player2Moves >=size){
+            if(allChecks(board, size)){
+                gameOver = true; 
+                cout << "Congratulations Player 2, You won"<<endl;
+                break;
+            }
+            else if (totalMoves == tie)
+            {
+                gameOver = true; 
+                cout << "Sorry, no more possible moves. Tie Game"<<endl;
+                break;
+            }
+            
+        }
+
         displayBoard(board, size);
     }
     displayBoard(board, size);
     
 
 }
+
+
 /**Get the player's location choice and make sure that the choice is valid, whether inbounds or empty */
 void playerChoice(char **board, const char player,int &pMoves, int &tMoves, const int size){
     int row;
@@ -174,6 +209,26 @@ char ** getBoard(int size){
 
     return board;
 }
+
+/**Check if a player has won the game*/
+bool allChecks(char ** board, const int size){
+
+    if(checkRows(board, size)){
+        return true;
+    }
+    else if (checkColumns(board, size))
+    {
+        return true;
+    }
+    else if (checkDiagonals(board, size)){
+        return true;
+    }
+    else{
+        return false;
+    }
+    
+}
+
 //this will check each row 
 //we will need three different functions
     //one to check each row, 
